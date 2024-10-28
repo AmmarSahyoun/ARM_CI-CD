@@ -1,0 +1,26 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v2
+
+    - name: 'Azure CLI Login'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: 'Deploy ARM Template'
+      run: |
+        az deployment group create \
+          --resource-group healthcare-dev-rg \
+          --template-file adf-template.json \
+          --parameters adf-parameters.json

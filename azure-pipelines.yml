@@ -1,0 +1,30 @@
+# Trigger on pushes to the main branch.
+# Authenticate with Azure using a service connection.
+# Deploy resources defined in an ARM template.
+
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# Step 1: Install Azure CLI
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    
+# Step 2: Login using Azure Service Principal
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Healthcare-Dev-ServiceConnection'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Deploying ARM templates..."
+      az deployment group create \
+        --resource-group healthcare-dev-rg \
+        --template-file arm/adf-template.json \
+        --parameters arm/adf-parameters.json

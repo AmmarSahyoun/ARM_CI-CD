@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "resources": [
+      {
+        "type": "Microsoft.DataFactory/factories/linkedservices",
+        "apiVersion": "2018-06-01",
+        "name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
+        "properties": {
+          "type": "AzureKeyVault",
+          "typeProperties": {
+            "baseUrl": "https://hcvault24.vault.azure.net/"
+          }
+        }
+      },
+      {
+        "type": "Microsoft.DataFactory/factories/linkedservices",
+        "apiVersion": "2018-06-01",
+        "name": "[concat(parameters('factoryName'), '/OnPrem_SQL_Link')]",
+        "properties": {
+          "description": "link service to ssms",
+          "type": "SqlServer",
+          "typeProperties": {
+            "server": "AMMARSAHYOUN\\SQLEXPRESS",
+            "database": "AdventureWorksLT2016",
+            "encrypt": "optional",
+            "trustServerCertificate": true,
+            "authenticationType": "SQL",
+            "userName": "adf_reader_login",
+            "password": {
+              "type": "AzureKeyVaultSecret",
+              "store": {
+                "referenceName": "AzureKeyVault1",
+                "type": "LinkedServiceReference"
+              },
+              "secretName": "adf-sql-login-password"
+            }
+          },
+          "connectVia": {
+            "referenceName": "MyOnPremSHIR",
+            "type": "IntegrationRuntimeReference"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "factoryName": {
+        "type": "string",
+        "defaultValue": "my-healthcare-adf"
+      }
+    }
+  }
+  

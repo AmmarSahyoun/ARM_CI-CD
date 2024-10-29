@@ -35,7 +35,4 @@ jobs:
         echo "Deploying linked services..."
         az deployment group create \
           --resource-group healthcare-dev-rg \
-          --template-file arm/linked_services/AzureKeyVault1.json
-        az deployment group create \
-          --resource-group healthcare-dev-rg \
-          --template-file arm/linked_services/OnPrem_SQL_Link.json
+          --template-file arm/linked_services_template.json

@@ -22,10 +22,20 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: 'Deploy ARM Template'
+    - name: 'Deploy ARM Templates'
       run: |
         echo "Deploying ARM templates..."
         az deployment group create \
           --resource-group healthcare-dev-rg \
           --template-file arm/adf-template.json \
           --parameters arm/adf-parameters.json
+
+    - name: 'Deploy Linked Services'
+      run: |
+        echo "Deploying linked services..."
+        az deployment group create \
+          --resource-group healthcare-dev-rg \
+          --template-file arm/linked_services/AzureKeyVault1.json
+        az deployment group create \
+          --resource-group healthcare-dev-rg \
+          --template-file arm/linked_services/OnPrem_SQL_Link.json

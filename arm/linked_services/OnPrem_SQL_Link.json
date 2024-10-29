@@ -1,0 +1,28 @@
+{
+    "name": "OnPrem_SQL_Link",
+    "properties": {
+        "description": "link service to ssms",
+        "annotations": [],
+        "type": "SqlServer",
+        "typeProperties": {
+            "server": "AMMARSAHYOUN\\SQLEXPRESS",
+            "database": "AdventureWorksLT2016",
+            "encrypt": "optional",
+            "trustServerCertificate": true,
+            "authenticationType": "SQL",
+            "userName": "adf_reader_login",
+            "password": {
+                "type": "AzureKeyVaultSecret",
+                "store": {
+                    "referenceName": "AzureKeyVault1",
+                    "type": "LinkedServiceReference"
+                },
+                "secretName": "adf-sql-login-password"
+            }
+        },
+        "connectVia": {
+            "referenceName": "MyOnPremSHIR",
+            "type": "IntegrationRuntimeReference"
+        }
+    }
+}

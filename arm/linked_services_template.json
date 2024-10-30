@@ -18,7 +18,7 @@
       "apiVersion": "2018-06-01",
       "name": "[concat(parameters('factoryName'), '/OnPrem_SQL_Link')]",
       "dependsOn": [
-        "[resourceId('Microsoft.DataFactory/factories/linkedservices', concat(parameters('factoryName'), '/AzureKeyVault1'))]"
+        "[resourceId('Microsoft.DataFactory/factories/linkedservices', parameters('factoryName'), 'AzureKeyVault1')]"
       ],
       "properties": {
         "description": "link service to ssms",

@@ -1,6 +1,20 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
+  "parameters": {
+    "factoryName": {
+      "type": "string",
+      "defaultValue": "my-healthcare-adf"
+    },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "healthcareadls0161"
+    },
+    "managedIdentityId": {
+      "type": "string",
+      "defaultValue": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'my-healthcare-adf')]"
+    }
+  },
   "resources": [
     {
       "type": "Microsoft.DataFactory/factories/linkedservices",
@@ -9,18 +23,17 @@
       "properties": {
         "type": "AzureDataLakeStorage",
         "typeProperties": {
-          "url": "https://healthcareadls0161.dfs.core.windows.net/"
+          "url": "[concat('https://', parameters('storageAccountName'), '.dfs.core.windows.net/')]"
+        },
+        "connectVia": {
+          "referenceName": "[parameters('managedIdentityId')]",
+          "type": "IntegrationRuntimeReference"
         },
         "authentication": {
-          "type": "SystemAssignedManagedIdentity"
+          "type": "ManagedIdentity",
+          "resource": "[concat('https://', parameters('storageAccountName'), '.blob.core.windows.net/')]"
         }
       }
     }
-  ],
-  "parameters": {
-    "factoryName": {
-      "type": "string",
-      "defaultValue": "my-healthcare-adf"
-    }
-  }
+  ]
 }

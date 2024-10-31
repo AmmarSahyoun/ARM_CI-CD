@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.DataFactory/factories/linkedservices",
+      "apiVersion": "2018-06-01",
+      "name": "[concat(parameters('factoryName'), '/ADLS_Link')]",
+      "properties": {
+        "type": "AzureDataLakeStorage",
+        "typeProperties": {
+          "url": "https://healthcareadls.dfs.core.windows.net/"
+        },
+        "authentication": {
+          "type": "SystemAssignedManagedIdentity"
+        }
+      }
+    }
+  ],
+  "parameters": {
+    "factoryName": {
+      "type": "string",
+      "defaultValue": "my-healthcare-adf"
+    }
+  }
+}

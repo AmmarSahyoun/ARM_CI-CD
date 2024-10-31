@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "resources": [
+      {
+        "type": "Microsoft.DataFactory/factories/datasets",
+        "apiVersion": "2018-06-01",
+        "name": "[concat(parameters('factoryName'), '/SQLServer_Dataset')]",
+        "properties": {
+          "linkedServiceName": {
+            "referenceName": "OnPrem_SQL_Link",
+            "type": "LinkedServiceReference"
+          },
+          "structure": [],
+          "type": "SqlServerTable",
+          "typeProperties": {
+            "tableName": "[parameters('tableName')]",
+            "query": "SELECT [ProductID], [Name], [ProductNumber], [Color], [StandardCost], [ListPrice], [Size], [Weight], [ProductCategoryID], [ProductModelID], [SellStartDate], [SellEndDate], [DiscontinuedDate], [ThumbNailPhoto], [ThumbnailPhotoFileName], [rowguid], [ModifiedDate] FROM [AdventureWorksLT2016].[SalesLT].[Product] WHERE SellStartDate = '2007-07-01 00:00:00.000'"
+          }
+        }
+      },
+      {
+        "type": "Microsoft.DataFactory/factories/datasets",
+        "apiVersion": "2018-06-01",
+        "name": "[concat(parameters('factoryName'), '/ADLS_Dataset')]",
+        "properties": {
+          "linkedServiceName": {
+            "referenceName": "ADLS_Link",
+            "type": "LinkedServiceReference"
+          },
+          "type": "DelimitedText",
+          "typeProperties": {
+            "location": {
+              "type": "AzureDataLakeStoreLocation",
+              "fileName": "product_data.csv",
+              "folderPath": "raw-data/"
+            },
+            "columnDelimiter": ",",
+            "encodingName": "UTF-8"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "factoryName": {
+        "type": "string",
+        "defaultValue": "my-healthcare-adf"
+      },
+      "tableName": {
+        "type": "string",
+        "defaultValue": "SalesLT.Product"
+      }
+    }
+  }

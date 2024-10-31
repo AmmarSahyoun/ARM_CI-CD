@@ -1,2 +1,3 @@
 # adf_arm_cicd
-Arm deployment into Azure by Actions\workflow
+
+Each arm push step is automated through GitHub Actions into Azure.

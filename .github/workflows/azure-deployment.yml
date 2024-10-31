@@ -22,9 +22,16 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: 'Deploy ARM Templates'
+    - name: 'Deploy Storage Account'
       run: |
-        echo "Deploying ARM templates..."
+        echo "Deploying Storage Account..."
+        az deployment group create \
+          --resource-group healthcare-dev-rg \
+          --template-file arm/adls_storage_account.json
+
+    - name: 'Deploy Azure Data Factory'
+      run: |
+        echo "Deploying Azure Data Factory..."
         az deployment group create \
           --resource-group healthcare-dev-rg \
           --template-file arm/adf-template.json \
@@ -32,7 +39,28 @@ jobs:
 
     - name: 'Deploy Linked Services'
       run: |
-        echo "Deploying linked services..."
+        echo "Deploying Linked Services..."
         az deployment group create \
           --resource-group healthcare-dev-rg \
           --template-file arm/linked_services_template.json
+
+    - name: 'Deploy ADLS Linked Service'
+      run: |
+        echo "Deploying Linked Service for ADLS..."
+        az deployment group create \
+          --resource-group healthcare-dev-rg \
+          --template-file arm/adls_linked_service.json
+
+    - name: 'Deploy Datasets'
+      run: |
+        echo "Deploying Datasets..."
+        az deployment group create \
+          --resource-group healthcare-dev-rg \
+          --template-file arm/datasets.json
+
+    - name: 'Deploy Copy Pipeline'
+      run: |
+        echo "Deploying Copy Pipeline..."
+        az deployment group create \
+          --resource-group healthcare-dev-rg \
+          --template-file arm/copy_pipeline.json

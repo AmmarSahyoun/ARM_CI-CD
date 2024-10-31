@@ -9,7 +9,7 @@
       "properties": {
         "type": "AzureDataLakeStorage",
         "typeProperties": {
-          "url": "https://healthcareadls.dfs.core.windows.net/"
+          "url": "https://healthcareadls0161.dfs.core.windows.net/"
         },
         "authentication": {
           "type": "SystemAssignedManagedIdentity"

@@ -5,7 +5,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2019-06-01",
-      "name": "healthcareadls",
+      "name": "healthcareadls0161",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard_LRS"

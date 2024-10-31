@@ -9,10 +9,6 @@
     "storageAccountName": {
       "type": "string",
       "defaultValue": "healthcareadls0161"
-    },
-    "managedIdentityId": {
-      "type": "string",
-      "defaultValue": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'my-healthcare-adf')]"
     }
   },
   "resources": [
@@ -21,17 +17,12 @@
       "apiVersion": "2018-06-01",
       "name": "[concat(parameters('factoryName'), '/ADLS_Link')]",
       "properties": {
-        "type": "AzureDataLakeStorage",
+        "type": "AzureBlobFS",
         "typeProperties": {
           "url": "[concat('https://', parameters('storageAccountName'), '.dfs.core.windows.net/')]"
         },
-        "connectVia": {
-          "referenceName": "[parameters('managedIdentityId')]",
-          "type": "IntegrationRuntimeReference"
-        },
         "authentication": {
-          "type": "ManagedIdentity",
-          "resource": "[concat('https://', parameters('storageAccountName'), '.blob.core.windows.net/')]"
+          "type": "ManagedIdentity"
         }
       }
     }

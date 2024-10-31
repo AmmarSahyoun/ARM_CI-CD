@@ -64,3 +64,11 @@ jobs:
         az deployment group create \
           --resource-group healthcare-dev-rg \
           --template-file arm/copy_pipeline.json
+
+    - name: 'Publish Azure Data Factory'
+      run: |
+        echo "Publishing Azure Data Factory pipelines..."
+        az rest --method POST \
+          --uri "https://management.azure.com/subscriptions/${{ secrets.AZURE_CREDENTIALS.subscriptionId }}/resourceGroups/healthcare-dev-rg/providers/Microsoft.DataFactory/factories/${{ secrets.AZURE_CREDENTIALS.factoryName }}/publish?api-version=2018-06-01" \
+          --headers "Content-Type=application/json" \
+          --body "{}"

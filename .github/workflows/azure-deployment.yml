@@ -68,10 +68,11 @@ jobs:
     - name: 'Publish Azure Data Factory'
       env:
         SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
+        RESOURCE_GROUP: "healthcare-dev-rg"
         FACTORY_NAME: "my-healthcare-adf"
       run: |
         echo "Publishing Azure Data Factory pipelines..."
         az rest --method POST \
-          --uri "https://management.azure.com/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/healthcare-dev-rg/providers/Microsoft.DataFactory/factories/${FACTORY_NAME}/publish?api-version=2018-06-01" \
+          --uri "https://management.azure.com/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.DataFactory/factories/${FACTORY_NAME}/publish?api-version=2021-10-01" \
           --headers "Content-Type=application/json" \
           --body "{}"

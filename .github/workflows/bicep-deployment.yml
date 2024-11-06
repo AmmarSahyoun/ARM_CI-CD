@@ -1,0 +1,28 @@
+name: Deploy Bicep Templates
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'bicep_templates_modules/**'     
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v2
+
+    - name: 'Azure CLI Login'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: 'Deploy Bicep Templates'
+      run: |
+        echo "Deploying Bicep Templates..."
+        az deployment sub create \
+          --location westeurope \
+          --template-file ./bicep_templates_modules/main.bicep

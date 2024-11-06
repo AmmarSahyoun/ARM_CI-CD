@@ -1,20 +1,26 @@
-## Automates Azure resource deployment using ARM templates 
-### Each pushes to the main branch trigger a CI CD pipeline workflow.
+## Continuous deployment using separate ARM templates for json and Bicep
+### - CI checks on PR ensure templates quality and consistency.
+### - CD pipeline triggers only if changes happened in a specific directory.
+
+### CI checks:
+
+* Bicep Syntax Validation.
+* Bicep Linter.
+* Deployment Tests.
+* Pull Request (PR) Checks.
+* Unit Testing with Mock Deployments.
+* Security Scans.
 
 
-### Prerequisites:
-
-* Azure subscription
-* GitHub repository
-* Basic understanding of ARM templates
-
-### Workflow:
+### CD Workflow:
 
 * Push to main branch triggers deployment tool.
-* Deployment tool deploys resources using azuredeploy.json.
+* Changes happened in arm will triggers resources deployment using json.
+* Changes happened in bicep will triggers resources deployment using bicep.
 
 ### Benefits:
 1. Automated deployment to avoid manual errors
 2. Version control with GitHub
 3. Collaborative development
 4. Add peer-review test on PR in Dev layer.
+5. Utilize Bicep templates for more readable and logical IaC.

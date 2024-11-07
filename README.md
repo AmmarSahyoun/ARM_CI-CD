@@ -1,6 +1,6 @@
 ## Continuous deployment using separate ARM templates for json and Bicep
-### - CI checks on PR ensure templates quality and consistency.
-### - CD pipeline triggers only if changes happened in a specific directory.
+#### - CI checks on PR to ensure templates quality and consistency.
+#### - CD pipeline triggers only if changes happened in a specific directory.
 
 ### CI checks:
 
@@ -19,8 +19,8 @@
 * Changes happened in bicep will triggers resources deployment using bicep.
 
 ### Benefits:
-1. Automated deployment to avoid manual errors
-2. Version control with GitHub
+1. Automated deployment avoids manual errors
+2. Maintain code history through Version control.
 3. Collaborative development
 4. Add peer-review test on PR in Dev layer.
 5. Utilize Bicep templates for more readable and logical IaC.

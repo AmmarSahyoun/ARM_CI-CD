@@ -1,0 +1,54 @@
+name: CI Checks for Bicep Templates
+
+on:
+  pull_request:
+    branches:
+      - main
+      - feature/*
+
+jobs:
+  bicep-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v2
+
+    - name: 'Install Azure CLI and Bicep CLI'
+      run: |
+        az upgrade --yes
+        az bicep install
+
+    - name: 'Lint Bicep Files'
+      run: |
+        echo "Linting Bicep files..."
+        for file in $(find ./bicep_templates_modules -name '*.bicep'); do
+          echo "Linting $file"
+          az bicep build --file $file --stdout
+        done
+
+  validate-bicep:
+    runs-on: ubuntu-latest
+    needs: bicep-lint
+
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v2
+
+    - name: 'Install Azure CLI and Bicep CLI'
+      run: |
+        az upgrade --yes
+        az bicep install
+
+    - name: 'Validate Bicep Files'
+      run: |
+        echo "Validating Bicep deployments..."
+        for file in $(find ./bicep_templates_modules -name '*.bicep'); do
+          echo "Validating $file"
+          az deployment sub what-if --location westeurope --template-file $file
+        done
+
+    - name: 'Static Analysis with Checkov'
+      uses: bridgecrewio/checkov-action@master
+      with:
+        directory: ./bicep_templates_modules

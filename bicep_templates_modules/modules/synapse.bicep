@@ -13,10 +13,13 @@ param defaultDataLakeFileSystemName string
 resource synapse 'Microsoft.Synapse/workspaces@2021-06-01' = {
   name: synapseWorkspaceName
   location: location
+  identity: {
+    type: 'SystemAssigned' 
+  }
   properties: {
     defaultDataLakeStorage: {
-      accountUrl: 'https://${defaultDataLakeStorageAccountName}.dfs.core.windows.net'
-      filesytem: defaultDataLakeFileSystemName
+      accountUrl: 'https://${defaultDataLakeStorageAccountName}.dfs.${environment().suffixes.storage}'
+      filesystem: defaultDataLakeFileSystemName
     }
   }
 }
